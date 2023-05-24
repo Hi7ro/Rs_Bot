@@ -1,22 +1,23 @@
 let robot = require("robotjs");
 
-main();
+// main();
+testScreen();
 
 function main() {
-  let first_tree_x = 460;
-  let first_tree_y = 500;
-
-  let second_tree_x = 977;
-  let second_tree_y = 430;
-
   console.log("Starting...");
-  sleep(2000);
+  sleep(2500);
 
+  // infinite loop. use cmd+c / ctr+c in terminal to stop the program
   while (true) {
-    chopTree(first_tree_x, first_tree_y);
-    dropLogs();
-    chopTree(second_tree_x, second_tree_y);
-    dropLogs();
+    let tree = findTree();
+    // if we can't find a tree, write error message and exit the loop
+    if (findTree == false) {
+      console.log("Could not find a tree");
+      break;
+    } else {
+      chopTree(tree);
+      dropLogs();
+    }
   }
 
   console.log("Done!");
@@ -34,14 +35,29 @@ function dropLogs() {
   robot.mouseClick();
 }
 
-function chopTree(tree_x, tree_y) {
-  robot.moveMouseSmooth(tree_x, tree_y);
+function chopTree(tree) {
+  robot.moveMouseSmooth(tree);
   robot.mouseClick();
   console.log("Gathered Logs successfully");
   sleep(7000);
 }
 
 function moveToInventory() {
-  robot.moveMouse(1350, 665);
+  robot.moveMouseSmooth(1350, 665);
   robot.mouseClick();
+}
+
+function findTree() {
+  let tree_colors = ["7e5322", "64421a", "533615", "744d1e"];
+  let size = 10;
+  let x = 0, y = 0, width = 1500, height = 900;
+  let img = robot.screen.capture(x, y, width, height);
+  let pixel_color = img.colorAt(30, 55);
+  
+  let sample_color = img.color();
+  for(let i = 0; i <= 1000; i++){
+    
+  }
+
+  console.log(pixel_color);
 }
